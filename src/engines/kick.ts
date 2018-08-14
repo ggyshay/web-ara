@@ -1,7 +1,9 @@
-export class Kick {
+import { InstrumentEngine } from './engines';
+
+export class Kick implements InstrumentEngine{
     private ctx: AudioContext;
-    private tone: number;
-    private decay: number;
+    public tone: number;
+    public decay: number;
     private osc: OscillatorNode;
     private gain: GainNode;
 

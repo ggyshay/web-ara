@@ -10,7 +10,8 @@ export class TransportComponent extends React.Component<any, any> {
         super(props);
         this.state = {
             steps: [false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false]
+                false, false, false, false, false, false, false, false],
+            selected: null,
         }
         Transport.loop = true;
         Transport.loopEnd = '1m'
@@ -28,15 +29,26 @@ export class TransportComponent extends React.Component<any, any> {
         })
     }
 
+    private selectInstrument = (selected: string, steps: boolean[]) => {
+        if (this.state.selected === selected) {
+            this.setState({ selected: null, steps: [false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false] })
+        } else {
+            this.setState({ selected, steps})
+        }
+    }
+
     render() {
         return (
             <div>
                 <p> This is the transport component!! </p>
                 <PlayPause onClick={this.playpause} />
-                <InstrumentHack steps={this.state.steps} selectedInstrument='Kick'>
-                    <Instrument engine='Kick' key='Kick'/>
+                <InstrumentHack steps={this.state.steps} selectedInstrument={this.state.selected}>
+                    <Instrument engine='Kick' key='Kick' handleClick={this.selectInstrument} />
+                    <Instrument engine='Snare' key='Snare' handleClick={this.selectInstrument} />
+                    <Instrument engine='HiHat' key='HiHat' handleClick={this.selectInstrument} />
                 </InstrumentHack>
-                <Steps handleStepChange={this.handleStepChange} steps={this.state.steps}/>
+                <Steps handleStepChange={this.handleStepChange} steps={this.state.steps} />
             </div>
         )
     }

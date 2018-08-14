@@ -13,7 +13,6 @@ export class PlayPause extends React.Component<any, any> {
         this.setState({
             playing: !this.state.playing // invert the playing variable
         });
-        console.log(this.state.playing ? 'Pause' : 'Play');
         this.props.onClick();
     }
     render() {

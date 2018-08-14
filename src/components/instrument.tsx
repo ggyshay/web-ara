@@ -1,26 +1,39 @@
 import * as React from 'react';
-import { Kick } from '../engines/kick';
-import { Transport, Time } from 'tone';
-import { Instruments } from './instrument-hack';
+import { Time, Transport } from 'tone';
+import { Snare, Kick, HiHat } from '../engines';
 import { areEqual } from '../utils/array-comparator';
+import { Instruments } from './instrument-hack';
 
 export interface InstrumentProps{
     engine: Instruments;
     steps?: boolean[];
+    selected?: boolean;
+    handleClick?: (engine:string, steps: boolean[]) => void;
 }
 
 export class Instrument extends React.Component<InstrumentProps, any> {
-    private kick: Kick;
+    private sound: any;
     private ctx: AudioContext;
     private loopId: number;
 
     constructor(props: any) {
         super(props);
         this.ctx = new AudioContext;
-        this.kick = new Kick(this.ctx);
-
+        switch(props.engine){
+            case 'Kick':
+                this.sound = new Kick(this.ctx);
+                break;
+            case 'Snare':
+                this.sound = new Snare(this.ctx);
+                break;
+            case 'HiHat':
+                this.sound = new HiHat(this.ctx);
+                break;
+        }
+        
         this.state = {
-            steps: [],
+            steps: [false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false],
         };
 
         this.loopId = 0;
@@ -28,7 +41,7 @@ export class Instrument extends React.Component<InstrumentProps, any> {
         
     }
 
-    componentDidUpdate(prevProps){
+    componentDidUpdate(){
         if(this.props.steps && !areEqual(this.props.steps, this.state.steps)){
             this.setState({
                 steps: this.props.steps.slice(0),
@@ -37,13 +50,6 @@ export class Instrument extends React.Component<InstrumentProps, any> {
         }
     }
 
-    // static getDerivedStateFromProps(props, state){
-    //     if(props.steps && props.steps !== state.steps){
-    //         return {steps: props.steps.slice(0)};
-    //     }
-    //     return null;
-    // }
-
     createLoop = () => {
         if(!this.props.steps){ return ; }
         Transport.clear(this.loopId);
@@ -51,18 +57,31 @@ export class Instrument extends React.Component<InstrumentProps, any> {
             console.log('loop', time);
             this.state.steps.forEach((s, i) => {
                 if (s) {
-                    this.kick.trigger(time + i * Time('16n').toSeconds())
+                    this.sound.trigger(time + i * Time('16n').toSeconds())
                 }
             });
         }
         this.loopId = Transport.schedule(loop, "0");
     }
 
+    handleClick = () => {
+        if(this.props.handleClick) this.props.handleClick(this.props.engine, this.state.steps.slice(0));
+    }
+
     render() {
+        const InstrumentStyle = {
+            width: '3em',
+            height: '3em',
+            margin: '0.2em',
+            borderRadius: 10,
+            padding: 5,
+            backgroundColor: this.props.selected ? '#F863BC' : '#696969'
+        }
         return (
-            <div>
-                <p>Just to know there's an instrument here</p>
+            <div style={InstrumentStyle} onClick={this.handleClick}>
+                <p>{this.props.engine}</p>
             </div >
         )
     }
 }
+

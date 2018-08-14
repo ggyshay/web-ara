@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Instrument } from './instrument';
 
 export type Instruments = 'Kick'|'Snare'|'HiHat'|'Clap'
 
@@ -13,39 +12,18 @@ export class InstrumentHack extends React.Component<InstrumentHackProps> {
         super(props);
     }
 
-    // createLoops = () => {
-    //     if (!this.props.children) { return; }
-    //     React.Children.forEach(this.props.children, child => {
-    //         if (typeof child === 'object' && child.key === this.props.selectedInstrument) {
-    //     })
-    //     // if (this.props.children instanceof Array) {
-    //     //     this.props.children.forEach((instrument: Instrument) => {
-    //     //         if (instrument instanceof Instrument) {
-    //     //             instrument.createLoop(this.props.steps);
-    //     //         }
-    //     //     });
-    //     // } else {
-    //     //     console.log(Instrument, typeof this.props.children)
-    //     //     if (this.props.children instanceof Instrument) {
-    //     //         if (this.props.children instanceof React.Component) {
-    //     //             // this.props.children.createLoop(this.props.steps);
-    //     //         }
-    //     //     }
-    //     // }
-    // }
-
     render() {
         const childrenWithProps = React.Children.map(this.props.children, (child) =>{
             if(typeof child === 'object'){
                 if (child.key === this.props.selectedInstrument){
-                    return React.cloneElement(child, {steps: this.props.steps});
+                    return React.cloneElement(child, {steps: this.props.steps, selected: true});
                 } else {
-                    return React.cloneElement(child, {steps: null})   
+                    return React.cloneElement(child, {steps: null, selected: false});
                 }
             }
             return child;
         });
-        console.log(childrenWithProps)
+
         return (
             <div>
                 <p> This is the InstrumentHack </p>
