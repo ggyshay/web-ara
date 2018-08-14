@@ -12,7 +12,7 @@ export interface InstrumentProps{
 export class Instrument extends React.Component<InstrumentProps, any> {
     private kick: Kick;
     private ctx: AudioContext;
-    private loop: (time: number) => void;
+    private loopId: number;
 
     constructor(props: any) {
         super(props);
@@ -23,7 +23,7 @@ export class Instrument extends React.Component<InstrumentProps, any> {
             steps: [],
         };
 
-        this.loop = (time: number) => { };
+        this.loopId = 0;
         Transport.bpm.value = 120;
         
     }
@@ -45,8 +45,8 @@ export class Instrument extends React.Component<InstrumentProps, any> {
     // }
 
     createLoop = () => {
-        debugger;
         if(!this.props.steps){ return ; }
+        Transport.clear(this.loopId);
         const loop = (time: number) => {
             console.log('loop', time);
             this.state.steps.forEach((s, i) => {
@@ -55,7 +55,7 @@ export class Instrument extends React.Component<InstrumentProps, any> {
                 }
             });
         }
-        Transport.schedule(loop, "0");
+        this.loopId = Transport.schedule(loop, "0");
     }
 
     render() {

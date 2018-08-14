@@ -20,6 +20,7 @@ export class Kick {
 
     }
     trigger(time: number) {
+        console.log('trigger kick ', time)
         this.setup();
 
         this.osc.frequency.setValueAtTime(this.tone, time + 0.001);
