@@ -33,8 +33,8 @@ export class TransportComponent extends React.Component<any, any> {
             <div>
                 <p> This is the transport component!! </p>
                 <PlayPause onClick={this.playpause} />
-                <InstrumentHack steps={this.state.steps}>
-                    <Instrument />
+                <InstrumentHack steps={this.state.steps} selectedInstrument='Kick'>
+                    <Instrument engine='Kick' key='Kick'/>
                 </InstrumentHack>
                 <Steps handleStepChange={this.handleStepChange} steps={this.state.steps}/>
             </div>
