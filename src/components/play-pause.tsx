@@ -10,10 +10,14 @@ export class PlayPause extends React.Component<any, any> {
     }
 
     public handleClick = () => {
+        if(this.state.playing){
+            this.props.pause();
+        } else {
+            this.props.play();
+        }
         this.setState({
             playing: !this.state.playing // invert the playing variable
         });
-        this.props.onClick();
     }
     render() {
         return (
