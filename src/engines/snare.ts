@@ -8,6 +8,7 @@ export class Snare implements InstrumentEngine{
     private noiseEnvelope: GainNode;
     private osc: OscillatorNode;
     private oscEnvelope: GainNode;
+    private volume: number;
     constructor(ctx) {
         this.ctx = ctx;
         this.tone = 100;
@@ -51,17 +52,23 @@ export class Snare implements InstrumentEngine{
     trigger(time: number) {
         this.setup();
         console.log('trigger snare ', time);
-        this.noiseEnvelope.gain.setValueAtTime(1, time);
+        this.noiseEnvelope.gain.setValueAtTime(this.volume, time);
         this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + this.decay);
         this.noise.start(time)
 
         this.osc.frequency.setValueAtTime(this.tone, time);
-        this.oscEnvelope.gain.setValueAtTime(0.7, time);
-        this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + this.decay/2);
+        this.oscEnvelope.gain.setValueAtTime(0.7 * this.volume, time);
+        this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01 * this.volume, time + this.decay/2);
         this.osc.start(time)
 
         this.osc.stop(time + this.decay);
         this.noise.stop(time + this.decay);
     }
 
+    setTone = (tone: number) => {
+        this.tone = tone;
+    }
+    setVolume = (vol: number)=> {
+        this.volume = vol;
+    }
 }

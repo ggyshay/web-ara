@@ -1,6 +1,6 @@
 import { InstrumentEngine } from "./engines";
 
-export class HiHat implements InstrumentEngine{
+export class HiHat implements InstrumentEngine {
     private ctx: AudioContext;
     private ratios: number[];
     public tone: number;
@@ -11,12 +11,13 @@ export class HiHat implements InstrumentEngine{
     private oscEnvelope: GainNode;
     private bndPass: BiquadFilterNode;
     private hipass: BiquadFilterNode;
+    private volume: number;
 
     constructor(ctx) {
         this.ctx = ctx;
-        this.ratios = [2, 3, 4.16, 5.43, 6.79, 8.21];
-        this.tone = 40;
-        this.decay = 0.3;
+        this.ratios = [1, 1.3420, 1.2312, 1.6532, 1.9523, 2.1523];//1, 1.3420, 1.2312, 1.6532, 1.9523, 2.1523
+        this.tone = 130.81;
+        this.decay = 0.45;
     }
 
     setup() {
@@ -29,10 +30,11 @@ export class HiHat implements InstrumentEngine{
         this.oscEnvelope = this.ctx.createGain();
         this.bndPass = this.ctx.createBiquadFilter();
         this.bndPass.type = 'bandpass';
-        this.bndPass.frequency.value = 10000;
+        this.bndPass.frequency.value = 20000;
+        this.bndPass.Q.value = 0.2;
         this.hipass = this.ctx.createBiquadFilter();
         this.hipass.type = "highpass";
-        this.hipass.frequency.value = 7000;
+        this.hipass.frequency.value = 5000;
 
         this.noise.connect(this.noiseFilter);
         this.noiseFilter.connect(this.noiseEnvelope);
@@ -56,6 +58,7 @@ export class HiHat implements InstrumentEngine{
     }
 
     trigger(time) {
+        console.log('trigger hat ', time);
         this.setup();
         this.ratios.forEach((ratio) => {
             var osc = this.ctx.createOscillator();
@@ -66,16 +69,23 @@ export class HiHat implements InstrumentEngine{
             osc.start(time);
             osc.stop(time + this.decay);
         });
-        this.noise.start(time);
-        this.noise.stop(time + this.decay)
+        // this.noise.start(time);
+        // this.noise.stop(time + this.decay)
 
-        this.noiseEnvelope.gain.setValueAtTime(0, time);
-        this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.1, time +0.33 * this.decay);
-        this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.00001, time + this.decay);
+        // this.noiseEnvelope.gain.setValueAtTime(0.1, time);
+        // // this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.1, time +0.33 * this.decay);
+        // this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.00001, time + this.decay);
 
-        this.oscEnvelope.gain.setValueAtTime(0.00001, time);
-        this.oscEnvelope.gain.exponentialRampToValueAtTime(1, time + 0.067 * this.decay);
-        this.oscEnvelope.gain.exponentialRampToValueAtTime(0.3, time + 0.1 * this.decay);
-        this.oscEnvelope.gain.exponentialRampToValueAtTime(0.00001, time + this.decay);
+        this.oscEnvelope.gain.setValueAtTime(0.00001 * this.volume, time);
+        this.oscEnvelope.gain.exponentialRampToValueAtTime(1 * this.volume, time + 0.067 * this.decay);
+        this.oscEnvelope.gain.exponentialRampToValueAtTime(0.3 * this.volume, time + 0.1 * this.decay);
+        this.oscEnvelope.gain.exponentialRampToValueAtTime(0.00001 * this.volume, time + this.decay);
+    }
+
+    setTone = (tone: number) => {
+        this.tone = tone;
+    }
+    setVolume = (vol: number) => {
+        this.volume = vol;
     }
 }

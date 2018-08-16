@@ -9,6 +9,8 @@ export interface InstrumentProps{
     steps?: boolean[];
     selected?: boolean;
     handleClick?: (engine:string, steps: boolean[]) => void;
+    tone: number;
+    volume: number;
 }
 
 export class Instrument extends React.Component<InstrumentProps, any> {
@@ -69,6 +71,8 @@ export class Instrument extends React.Component<InstrumentProps, any> {
     }
 
     render() {
+        this.sound.setTone(this.props.tone);
+        this.sound.setVolume(this.props.volume);
         const InstrumentStyle = {
             width: '3em',
             height: '3em',

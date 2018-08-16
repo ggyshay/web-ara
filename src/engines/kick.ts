@@ -6,6 +6,7 @@ export class Kick implements InstrumentEngine{
     public decay: number;
     private osc: OscillatorNode;
     private gain: GainNode;
+    private volume: number;
 
     constructor(ctx: AudioContext) {
         this.ctx = ctx;
@@ -26,14 +27,22 @@ export class Kick implements InstrumentEngine{
         this.setup();
 
         this.osc.frequency.setValueAtTime(this.tone, time + 0.001);
-        this.gain.gain.linearRampToValueAtTime(1, time + 0.1)
+        this.gain.gain.linearRampToValueAtTime(this.volume, time + 0.1)
 
         this.osc.frequency.exponentialRampToValueAtTime(1, time + this.decay);
-        this.gain.gain.exponentialRampToValueAtTime(0.01, time + this.decay);
+        this.gain.gain.exponentialRampToValueAtTime(0.01 * this.volume, time + this.decay);
         this.gain.gain.linearRampToValueAtTime(0, time + this.decay + 0.1)
 
         this.osc.start(time);
 
         this.osc.stop(time + this.decay + 0.1);
+    }
+
+    setTone = (tone: number) => {
+        this.tone = tone;
+    }
+
+    setVolume = (vol: number)=> {
+        this.volume = vol;
     }
 }
