@@ -24,7 +24,11 @@ export class TransportComponent extends React.Component<any, any> {
         Transport.loopEnd = '1m'
     }
 
-    playpause = () => {
+    pause = () => {
+        Transport.stop();
+    }
+
+    play = () => {
         Transport.start();
     }
 
@@ -87,7 +91,6 @@ export class TransportComponent extends React.Component<any, any> {
         return (
             <div>
                 <p> This is the transport component!! </p>
-                <PlayPause onClick={this.playpause} />
                 <div style={{ margin: 10 }}>
                     <Slider label="Kick Tone" onValueChange={this.handleKickTone}
                     value={this.state.kickTone} min={10} max={1000} />
@@ -105,6 +108,7 @@ export class TransportComponent extends React.Component<any, any> {
                     <Slider label="Hat Volume" onValueChange={this.handleHatVolume} value={this.state.hatVolume} min={0} max={1} />
 
                 </div>
+                <PlayPause play={this.play} pause={this.pause}/>
                 <InstrumentHack steps={this.state.steps} selectedInstrument={this.state.selected}>
                     <Instrument engine='Kick' key='Kick' handleClick={this.selectInstrument} tone={this.state.kickTone} volume={this.state.kickVolume} />
                     <Instrument engine='Snare' key='Snare' handleClick={this.selectInstrument} tone={this.state.snareTone} volume={this.state.snareVolume} />
