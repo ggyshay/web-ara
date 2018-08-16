@@ -4,7 +4,7 @@ import { InstrumentHack } from './instrument-hack';
 import { Transport } from 'tone';
 import { PlayPause } from './play-pause';
 import { Steps } from './steps';
-import { Slider } from './slider';
+import { Slider, Knob } from './slider';
 
 export class TransportComponent extends React.Component<any, any> {
     constructor(props) {
@@ -92,8 +92,18 @@ export class TransportComponent extends React.Component<any, any> {
             <div>
                 <p> This is the transport component!! </p>
                 <div style={{ margin: 10 }}>
-                    <Slider label="Kick Tone" onValueChange={this.handleKickTone}
-                    value={this.state.kickTone} min={10} max={1000} />
+                <Knob
+                    size={100}
+                    numTicks={50}
+                    degrees={260}
+                    min={10}
+                    max={1000}
+                    value={130}
+                    color={true}
+                    onChange={this.handleKickTone}
+                />
+                    {/* <Knob label="Kick Tone" onValueChange={this.handleKickTone}
+                    value={this.state.kickTone} min={10} max={1000} /> */}
                     <Slider label="Kick Volume" onValueChange={this.handleKickVolume}
                     value={this.state.kickVolume} min={0} max={1} />
                 </div>
