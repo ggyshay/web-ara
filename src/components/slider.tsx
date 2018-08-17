@@ -16,8 +16,8 @@ export class Slider extends React.Component<SliderProps, any> {
 
     render() {
         return (
-            <div style={{ display: 'inline-block' }}>
-                <h4>{this.props.label + " " + this.props.value}</h4>
+            <div style={{ display: 'inline-block', margin: 10 }}>
+                <p style={{color: 'white'}}>{this.props.label + " " + this.props.value}</p>
                 <input
                     type='range'
                     onInput={this.handleInput}

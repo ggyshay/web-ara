@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export type Instruments = 'Kick'|'Snare'|'HiHat'|'Clap'
+export type Instruments = 'Kick' | 'Snare' | 'HiHat' | 'Clap'
 
 export interface InstrumentHackProps {
     steps: boolean[];
@@ -13,20 +13,19 @@ export class InstrumentHack extends React.Component<InstrumentHackProps> {
     }
 
     render() {
-        const childrenWithProps = React.Children.map(this.props.children, (child) =>{
-            if(typeof child === 'object'){
-                if (child.key === this.props.selectedInstrument){
-                    return React.cloneElement(child, {steps: this.props.steps, selected: true});
+        const childrenWithProps = React.Children.map(this.props.children, (child) => {
+            if (typeof child === 'object') {
+                if (child.key === this.props.selectedInstrument) {
+                    return React.cloneElement(child, { steps: this.props.steps, selected: true });
                 } else {
-                    return React.cloneElement(child, {steps: null, selected: false});
+                    return React.cloneElement(child, { steps: null, selected: false });
                 }
             }
             return child;
         });
 
         return (
-            <div>
-                <p> This is the InstrumentHack </p>
+            <div style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                 {childrenWithProps}
             </div>
         )

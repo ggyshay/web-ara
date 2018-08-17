@@ -90,39 +90,12 @@ export class TransportComponent extends React.Component<any, any> {
     render() {
         return (
             <div>
-                <p> This is the transport component!! </p>
-                <div style={{ margin: 10 }}>
-                <Knob
-                    size={100}
-                    numTicks={50}
-                    degrees={260}
-                    min={10}
-                    max={1000}
-                    value={130}
-                    color={true}
-                    onChange={this.handleKickTone}
-                />
-                    {/* <Knob label="Kick Tone" onValueChange={this.handleKickTone}
-                    value={this.state.kickTone} min={10} max={1000} /> */}
-                    <Slider label="Kick Volume" onValueChange={this.handleKickVolume}
-                    value={this.state.kickVolume} min={0} max={1} />
-                </div>
-                <div style={{ margin: 10 }}>
-                    <Slider label="Snare Tone" onValueChange={this.handleSnareTone}
-                    value={this.state.snareTone} min={10} max={1000} />
-                    <Slider label="Snare Volume" onValueChange={this.handleSnareVolume}
-                    value={this.state.snareVolume} min={0} max={1} />
-                </div>
-                <div style={{ margin: 10 }}>
-                    <Slider label="Hat Tone" onValueChange={this.handleHatTone} value={this.state.hatTone} min={10} max={1000} />
-                    <Slider label="Hat Volume" onValueChange={this.handleHatVolume} value={this.state.hatVolume} min={0} max={1} />
-
-                </div>
-                <PlayPause play={this.play} pause={this.pause}/>
+                <h1 style={{color: 'white', fontFamily:"'Roboto', sans-serif;"}}>ARA web</h1>
+                <PlayPause play={this.play} pause={this.pause} />
                 <InstrumentHack steps={this.state.steps} selectedInstrument={this.state.selected}>
-                    <Instrument engine='Kick' key='Kick' handleClick={this.selectInstrument} tone={this.state.kickTone} volume={this.state.kickVolume} />
-                    <Instrument engine='Snare' key='Snare' handleClick={this.selectInstrument} tone={this.state.snareTone} volume={this.state.snareVolume} />
-                    <Instrument engine='HiHat' key='HiHat' handleClick={this.selectInstrument} tone={this.state.hatTone} volume={this.state.hatVolume} />
+                    <Instrument engine='Kick' key='Kick' handleClick={this.selectInstrument} />
+                    <Instrument engine='Snare' key='Snare' handleClick={this.selectInstrument} />
+                    <Instrument engine='HiHat' key='HiHat' handleClick={this.selectInstrument} />
                 </InstrumentHack>
                 <Steps handleStepChange={this.handleStepChange} steps={this.state.steps} />
             </div>

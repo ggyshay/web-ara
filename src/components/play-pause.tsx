@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './play.css'
 
 export class PlayPause extends React.Component<any, any> {
     constructor(props){
@@ -20,11 +21,10 @@ export class PlayPause extends React.Component<any, any> {
         });
     }
     render() {
+        const playClassName = 'playButton' + (this.state.playing ? ' pauseButton' : '')
         return (
-            <div>
-                <button onClick={this.handleClick}>
-                    {this.state.playing ? 'Pause' : 'Play'}
-                </button>
+            <div className="playContainer">
+                <div onClick={this.handleClick} className={playClassName}/>
             </div>
         );
     }
