@@ -72,11 +72,13 @@ export class Instrument extends React.Component<InstrumentProps, any> {
     }
 
     handleVolume = (volume:number)=> {
+        console.log('new volume ist', volume);
         this.sound.setVolume(volume);
         this.setState({volume});
     }
 
     handleTone = (tone:number) => {
+        console.log('new tone ist', tone);
         this.sound.setTone(tone);
         this.setState({tone});
     }

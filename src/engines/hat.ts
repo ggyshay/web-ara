@@ -11,13 +11,14 @@ export class HiHat implements InstrumentEngine {
     private oscEnvelope: GainNode;
     private bndPass: BiquadFilterNode;
     private hipass: BiquadFilterNode;
-    private volume: number;
+    public volume: number;
 
     constructor(ctx) {
         this.ctx = ctx;
         this.ratios = [1, 1.3420, 1.2312, 1.6532, 1.9523, 2.1523];//1, 1.3420, 1.2312, 1.6532, 1.9523, 2.1523
         this.tone = 130.81;
         this.decay = 0.45;
+        this.volume = 1;
     }
 
     setup() {

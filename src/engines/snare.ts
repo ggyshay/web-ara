@@ -8,11 +8,12 @@ export class Snare implements InstrumentEngine{
     private noiseEnvelope: GainNode;
     private osc: OscillatorNode;
     private oscEnvelope: GainNode;
-    private volume: number;
+    public volume: number;
     constructor(ctx) {
         this.ctx = ctx;
         this.tone = 100;
         this.decay = 0.2;
+        this.volume = 1;
     }
 
     setup() {

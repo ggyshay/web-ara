@@ -1,17 +1,18 @@
 import { InstrumentEngine } from './engines';
 
-export class Kick implements InstrumentEngine{
+export class Kick implements InstrumentEngine {
     private ctx: AudioContext;
     public tone: number;
     public decay: number;
     private osc: OscillatorNode;
     private gain: GainNode;
-    private volume: number;
+    public volume: number;
 
     constructor(ctx: AudioContext) {
         this.ctx = ctx;
         this.tone = 167.1;
         this.decay = 0.5;
+        this.volume = 1;
     }
 
     setup() {
@@ -23,7 +24,7 @@ export class Kick implements InstrumentEngine{
 
     }
     trigger(time: number) {
-        console.log('trigger kick ', time)
+        console.log('trigger kick ', time, this.tone, this.volume)
         this.setup();
 
         this.osc.frequency.setValueAtTime(this.tone, time + 0.001);
@@ -42,7 +43,7 @@ export class Kick implements InstrumentEngine{
         this.tone = tone;
     }
 
-    setVolume = (vol: number)=> {
+    setVolume = (vol: number) => {
         this.volume = vol;
     }
 }

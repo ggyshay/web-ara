@@ -90,7 +90,7 @@ export class TransportComponent extends React.Component<any, any> {
     render() {
         return (
             <div>
-                <h1 style={{color: 'white', fontFamily:"'Roboto', sans-serif;"}}>ARA web</h1>
+                <h1 style={{color: 'white', fontFamily:"'Roboto', sans-serif"}}>ARA web</h1>
                 <PlayPause play={this.play} pause={this.pause} />
                 <InstrumentHack steps={this.state.steps} selectedInstrument={this.state.selected}>
                     <Instrument engine='Kick' key='Kick' handleClick={this.selectInstrument} />
