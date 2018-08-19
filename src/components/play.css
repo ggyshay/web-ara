@@ -1,15 +1,18 @@
 
 .playButton {
+    display: inline-block;
     border: 0;
     background: transparent;
     box-sizing: border-box;
     width: 0;
-    height: 2em;
+    height: 2.3em;
     border-color: transparent transparent transparent #2AC7DC;
     transition: 100ms all ease;
     cursor: pointer;
     border-style: solid;
-    border-width: 1em 0 1em 1.5em;
+    border-width: 1.156em 0 1.156em 1.875em;
+    top: 0px;
+    margin-bottom: 1em;
 }
 
 .playButton:hover {
@@ -18,11 +21,6 @@
 
 .pauseButton {
     border-style: double;
-    border-width: 0px 0 0px 1.5em;
-}
-
-.playContainer {
-    display: inline-block;
-    margin-top: 3em;
-    height: 3em;
+    border-width: 0 0 0 1.875em;
+    border-color: transparent transparent transparent #2AC7DC;
 }

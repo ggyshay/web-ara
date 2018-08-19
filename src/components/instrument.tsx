@@ -4,6 +4,8 @@ import { Snare, Kick, HiHat } from '../engines';
 import { areEqual } from '../utils/array-comparator';
 import { Instruments } from './instrument-hack';
 import { Slider } from './slider';
+import { Clap } from '../engines/clap';
+import { Cymbal } from '../engines/cymbal';
 
 export interface InstrumentProps {
     engine: Instruments;
@@ -30,6 +32,13 @@ export class Instrument extends React.Component<InstrumentProps, any> {
             case 'HiHat':
                 this.sound = new HiHat(this.ctx);
                 break;
+            case 'Clap':
+                this.sound = new Clap(this.ctx);
+                break;
+
+            case 'Cymbal':
+                this.sound = new Cymbal(this.ctx);
+                break;
         }
 
         this.state = {
@@ -37,6 +46,7 @@ export class Instrument extends React.Component<InstrumentProps, any> {
                 false, false, false, false, false, false, false, false],
             volume: 1,
             tone: 130,
+            fxAmount: 0,
         };
 
         this.loopId = 0;
@@ -57,7 +67,6 @@ export class Instrument extends React.Component<InstrumentProps, any> {
         if (!this.props.steps) { return; }
         Transport.clear(this.loopId);
         const loop = (time: number) => {
-            console.log('loop', time);
             this.state.steps.forEach((s, i) => {
                 if (s) {
                     this.sound.trigger(time + i * Time('16n').toSeconds())
@@ -72,15 +81,18 @@ export class Instrument extends React.Component<InstrumentProps, any> {
     }
 
     handleVolume = (volume:number)=> {
-        console.log('new volume ist', volume);
         this.sound.setVolume(volume);
         this.setState({volume});
     }
 
     handleTone = (tone:number) => {
-        console.log('new tone ist', tone);
         this.sound.setTone(tone);
         this.setState({tone});
+    }
+
+    handleFX = (fxAmount: number) => {
+        this.sound.setFXAmount(fxAmount);
+        this.setState({ fxAmount })
     }
 
     render() {
@@ -94,15 +106,21 @@ export class Instrument extends React.Component<InstrumentProps, any> {
             boxShadow: '2px 2px 5px #222',
         }
         return (
-            <div style={{display: 'inline-block', margin: '2em', alignContent: 'center'}}>
+            <div style={{display: 'inline-block', width: '10em', alignContent: 'center', padding: '2em'}}>
                 <div>
                 <Slider label={this.props.engine + ' Tone'} onValueChange={this.handleTone}
                     value={this.state.tone} min={10} max={1000} />
                 </div>
                 <div>
                 <Slider label={this.props.engine + ' Volume'} onValueChange={this.handleVolume}
-                    value={this.state.volume} min={0} max={1} />
+                    value={this.state.volume} min={0} max={1} step={0.05}/>
                 </div>
+                <div>
+                <Slider label={this.props.engine + ' FX'} onValueChange={this.handleFX}
+                    value={this.state.fxAmount} min={0} max={100} />
+                </div>
+
+                
                 <div style={InstrumentStyle} onClick={this.handleClick}>
                     <p>{this.props.engine}</p>
                 </div >

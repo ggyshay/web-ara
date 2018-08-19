@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { Transport } from 'tone';
+import { BPM } from './bpm-component';
 import { Instrument } from './instrument';
 import { InstrumentHack } from './instrument-hack';
-import { Transport } from 'tone';
 import { PlayPause } from './play-pause';
 import { Steps } from './steps';
-import { Slider, Knob } from './slider';
 
 export class TransportComponent extends React.Component<any, any> {
     constructor(props) {
@@ -13,12 +13,7 @@ export class TransportComponent extends React.Component<any, any> {
             steps: [false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false],
             selected: null,
-            kickTone: 130,
-            snareTone: 130,
-            hatTone: 130,
-            kickVolume: 1,
-            snareVolume: 1,
-            hatVolume: 1,
+            bpm: 120,
         }
         Transport.loop = true;
         Transport.loopEnd = '1m'
@@ -51,51 +46,25 @@ export class TransportComponent extends React.Component<any, any> {
         }
     }
 
-    private handleKickTone = (kickTone: number) => {
-        this.setState({
-            kickTone
-        })
-    }
-
-    private handleSnareTone = (snareTone: number) => {
-        this.setState({
-            snareTone
-        })
-    }
-
-    private handleHatTone = (hatTone: number) => {
-        this.setState({
-            hatTone
-        })
-    }
-
-    private handleKickVolume = (kickVolume: number) => {
-        this.setState({
-            kickVolume
-        })
-    }
-
-    private handleSnareVolume = (snareVolume: number) => {
-        this.setState({
-            snareVolume
-        })
-    }
-
-    private handleHatVolume = (hatVolume: number) => {
-        this.setState({
-            hatVolume
-        })
+    handleBPMChange = (bpm: number) => {
+        Transport.bpm.value = bpm;
+        this.setState({ bpm });
     }
 
     render() {
         return (
             <div>
-                <h1 style={{color: 'white', fontFamily:"'Roboto', sans-serif"}}>ARA web</h1>
-                <PlayPause play={this.play} pause={this.pause} />
+                <h1 style={{ color: 'white', fontFamily: "'Roboto', sans-serif" }}>ARA web</h1>
+                <div style={{ display: 'block' }}>
+                    <BPM handleChange={this.handleBPMChange} value={this.state.bpm} />
+                    <PlayPause play={this.play} pause={this.pause} />
+                </div>
+
                 <InstrumentHack steps={this.state.steps} selectedInstrument={this.state.selected}>
                     <Instrument engine='Kick' key='Kick' handleClick={this.selectInstrument} />
-                    <Instrument engine='Snare' key='Snare' handleClick={this.selectInstrument} />
+                    <Instrument engine='Clap' key='Clap' handleClick={this.selectInstrument} />
                     <Instrument engine='HiHat' key='HiHat' handleClick={this.selectInstrument} />
+                    <Instrument engine='Cymbal' key='Cymbal' handleClick={this.selectInstrument} />
                 </InstrumentHack>
                 <Steps handleStepChange={this.handleStepChange} steps={this.state.steps} />
             </div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export type Instruments = 'Kick' | 'Snare' | 'HiHat' | 'Clap'
+export type Instruments = 'Kick' | 'Snare' | 'HiHat' | 'Clap' | 'Cymbal'
 
 export interface InstrumentHackProps {
     steps: boolean[];

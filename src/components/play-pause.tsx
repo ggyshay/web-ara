@@ -1,8 +1,8 @@
 import * as React from 'react';
-import './play.css'
+import './play.css';
 
 export class PlayPause extends React.Component<any, any> {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -11,7 +11,7 @@ export class PlayPause extends React.Component<any, any> {
     }
 
     public handleClick = () => {
-        if(this.state.playing){
+        if (this.state.playing) {
             this.props.pause();
         } else {
             this.props.play();
@@ -23,9 +23,7 @@ export class PlayPause extends React.Component<any, any> {
     render() {
         const playClassName = 'playButton' + (this.state.playing ? ' pauseButton' : '')
         return (
-            <div className="playContainer">
-                <div onClick={this.handleClick} className={playClassName}/>
-            </div>
+            <div onClick={this.handleClick} className={playClassName} />
         );
     }
 }

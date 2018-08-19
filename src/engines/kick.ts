@@ -7,24 +7,45 @@ export class Kick implements InstrumentEngine {
     private osc: OscillatorNode;
     private gain: GainNode;
     public volume: number;
+    private distortion: WaveShaperNode;
+    public fxAmount: number;
 
     constructor(ctx: AudioContext) {
         this.ctx = ctx;
         this.tone = 167.1;
         this.decay = 0.5;
         this.volume = 1;
+        this.fxAmount = 0;
     }
+
+    makeDistortionCurve(amount) {
+        var k = amount /4,
+            n_samples = 44100,
+            curve = new Float32Array(n_samples),
+            deg = Math.PI / 180,
+            i = 0,
+            x;
+        for (; i < n_samples; ++i) {
+            x = i * 2 / n_samples - 1;
+            curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+        }
+        return curve;
+    };
 
     setup() {
         this.osc = this.ctx.createOscillator();
         this.osc.type = 'sine'
         this.gain = this.ctx.createGain();
-        this.osc.connect(this.gain);
-        this.gain.connect(this.ctx.destination);
+        this.distortion = this.ctx.createWaveShaper();
+        this.distortion.curve = this.makeDistortionCurve(this.fxAmount);
 
+        this.osc.connect(this.gain);
+        this.gain.connect(this.distortion);
+        this.distortion.connect(this.ctx.destination);
     }
+
     trigger(time: number) {
-        console.log('trigger kick ', time, this.tone, this.volume)
+        if (this.volume == 0) { return };
         this.setup();
 
         this.osc.frequency.setValueAtTime(this.tone, time + 0.001);
@@ -45,5 +66,9 @@ export class Kick implements InstrumentEngine {
 
     setVolume = (vol: number) => {
         this.volume = vol;
+    }
+
+    setFXAmount = (amount: number) => {
+        this.fxAmount = amount;
     }
 }
